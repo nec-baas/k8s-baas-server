@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: necbaas-fluentd-config
+data:
+  # fluentd config. Refer to docker-fluentd Dockerfile environment variable.
+  MONGO_HOST: "necbaas-mongodb-server"
+  MONGO_PORT: "27017"
+  #CAPPED_SIZE:
+  #FLUSH_INTERVAL:
+

@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: necbaas-baas-server-config
+data:
+  # baas-server config. Refer to docker-baas Dockerfile environment variable.
+  MONGO_SERVERS: "necbaas-mongodb-server:27017"
+  LOG_FLUENT_HOST: "localhost"
+  #AMQP_URI: "amqp://rabbitmq:rabbitmq@necbaas-rabbitmq-server:5672"
+  #MONGO_MAX_CONNECTIONS_PER_HOST:
+  #SYSTEM_NO_CHARGE_KEY: 
+  #LOG_LEVEL: 
+  #JAVA_OPTS: 
+  #TOMCAT_MAX_THREADS:
+  #TOMCAT_MAX_CONNECTIONS:
+  #TOMCAT_PROXY_PORT:
+  #TOMCAT_SCHEME:
+  #TOMCAT_SECURE:
+
