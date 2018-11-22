@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: necbaas-cloudfn-server-config
+data:
+  # cloudfn-server config. Refer to docker-cloudfn-server Dockerfile environment variable.
+  AMQP_URI: "amqp://rabbitmq:rabbitmq@necbaas-rabbitmq-server:5672"
+  LOG_FLUENT_HOST: "localhost"
+  #LOG_LEVEL:
+  #SYSTEM_NO_CHARGE_KEY:

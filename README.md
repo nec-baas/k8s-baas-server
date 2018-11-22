@@ -16,7 +16,7 @@ NEC モバイルバックエンド基盤 サーバ一式を Kubernetes 上で起
 
 # 注意事項
 
-本定義でデプロイした MongoDB サーバの Pod について、
+本定義でデプロイした MongoDB サーバの Pod について
 
 - Pod が削除されると、 DB データが廃棄されます。
 - DB データの永続化が必要な場合は、Kubernetes の永続ボリューム (PV) を利用してください。
@@ -27,7 +27,11 @@ NEC モバイルバックエンド基盤 サーバ一式を Kubernetes 上で起
 
 以下のコマンドで設定ファイルをデプロイします。
 
-    $ kubectl create -f mongo-secrets.yml -f fluentd-config.yml -f baas-server-config.yml -f ssepush-server-config.yml
+    $ kubectl create -f mongo-secrets.yml \
+                     -f fluentd-config.yml \
+                     -f baas-server-config.yml \
+                     -f ssepush-server-config.yml \
+                     -f cloudfn-server-config.yml
 
 ### 設定ファイルの設定項目
 
@@ -53,12 +57,20 @@ NEC モバイルバックエンド基盤 サーバ一式を Kubernetes 上で起
 > - SSEPush サーバの環境変数設定
 > - ConfigMap name: necbaas-ssepush-server-config
 
+- cloudfn-server-config.yml
+
+> - Cloudfn サーバの環境変数設定
+> - ConfigMap name: cloudfn-server-config
 
 ## サーバのデプロイ
 
-下記のコマンドで BaaS サーバをデプロイしてください。
+下記のコマンドで各サーバをデプロイします。
 
-    $ kubectl create -f mongo-server.yml -f rabbitmq-server.yml -f baas-server.yml -f ssepush-server.yml
+    $ kubectl create -f mongo-server.yml \
+                     -f rabbitmq-server.yml \
+                     -f baas-server.yml \
+                     -f ssepush-server.yml \
+                     -f cloudfn-server.yml
 
 - mongo-server.yml
 
@@ -78,6 +90,10 @@ NEC モバイルバックエンド基盤 サーバ一式を Kubernetes 上で起
 - ssepush-server.yml
 
 > - ssepush-server サーバのデプロイメントとサービス定義
+
+- cloudfn-server.yml
+
+> - Cloudfn サーバのデプロイメント
 
 ## エントリポイントの確認
 
@@ -114,12 +130,37 @@ API サーバは正常稼働しています。
 
     $ kubectl get deployment necbaas-ssepush-deploy
 
-BaaS サーバのデベロッパーコンソールより、SSE Push サーバ 公開 URI を設定してください。
+BaaS サーバのデベロッパーコンソールより、SSE Push サーバ 公開 URI と AMQP 設定を実施してください。
      
-     http://[node_ip]:[ssepush_node_port]/ssepush/events
+- SSE Push サーバ 公開 URI
+     
+> - http://[node_ip]:[ssepush_node_port]/ssepush/events
+
+- AMQP 設定
+
+> - AMQPサーバアドレス: `necbaas-rabbitmq-server:5672`
+> - 認証ユーザ名: `rabbitmq`
+> - 認証パスワード: `rabbitmq`
 
 その後、[Node.js 用 SSE Push クライアントライブラリ](https://github.com/nec-baas/baas-ssepush-nodejs)を利用し、動作確認を実施してください。
 
+### Cloud Functions サーバ
+
+下記のコマンドでデプロイ状況を確認します。 `AVAILABLE` -> 1 なら、問題ありません。
+
+    $ kubectl get deployment necbaas-cloudfn-deploy
+
+BaaS サーバのデベロッパーコンソール → 「システム設定」より、 API サーバ 内部向けベース URI と AMQP 設定を実施してください。 
+
+- API サーバ 内部向けベース URI
+
+> - http://necbaas-api-console-server:8080/api
+
+- AMQP 設定
+ 
+> - SSEPush サーバの動作確認で設定済の場合は不要になります。
+
+ユーザコードの動作確認について、 [Cloud Functions サーバ 利用手順書](https://nec-baas.github.io/baas-manual/latest/server/ja/cloudfunctions-server/index.html) → 動作確認を参照してください。
 
 ## テンプレートの更新
 
