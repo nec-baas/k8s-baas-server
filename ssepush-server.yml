@@ -1,0 +1,38 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: necbaas-ssepush-server
+spec:
+  type: LoadBalancer
+  ports:
+    - name: "http-port"
+      protocol: "TCP"
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: necbaas-ssepush-server
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: necbaas-ssepush-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: necbaas-ssepush-server
+  template:
+    metadata:
+      labels:
+        app: necbaas-ssepush-server
+    spec:
+      containers:
+        - name: ssepush-container
+          image: necbaas/ssepush-server
+          ports:
+            - containerPort: 8080
+          envFrom:
+          - configMapRef:
+              name: necbaas-ssepush-server-config

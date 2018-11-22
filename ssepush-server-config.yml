@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: necbaas-ssepush-server-config
+data:
+  # ssepush-server config. Refer to docker-ssepush-server Dockerfile environment variable.
+  AMQP_URI: "amqp://rabbitmq:rabbitmq@necbaas-rabbitmq-server:5672"
+  #LOG_LEVEL: 
+  #JAVA_OPTS: 
+  #TOMCAT_MAX_THREADS:
+  #TOMCAT_MAX_CONNECTIONS:
+  #HEART_BEAT_INTERVAL_SEC:
+
