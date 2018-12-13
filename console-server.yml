@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: necbaas-api-console-server
+  name: necbaas-console-server
 spec:
   type: LoadBalancer
   ports:
@@ -11,22 +11,22 @@ spec:
       port: 8080
       targetPort: 8080
   selector:
-    app: necbaas-api-console-server
+    app: necbaas-console-server
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: necbaas-api-console-deploy
+  name: necbaas-console-deploy
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: necbaas-api-console-server
+      app: necbaas-console-server
   template:
     metadata:
       labels:
-        app: necbaas-api-console-server
+        app: necbaas-console-server
     spec:
       containers:
         - name: fluentd-container
@@ -38,8 +38,8 @@ spec:
               name: necbaas-fluentd-config
           - secretRef:
               name: necbaas-mongo-secrets
-        - name: api-console-container
-          image: necbaas/api-console-server
+        - name: console-container
+          image: necbaas/console-server
           ports:
           - containerPort: 8080
           envFrom:

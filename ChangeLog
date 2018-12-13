@@ -1,7 +1,11 @@
+2018/12/13
+
+    * api/console サーバの分割
+
 2018/11/22
 
 	* OSS向けの修正
-	* k8s-ssepush-server テンプレートとの統合
+	* k8s-ssepush-server, k8s-cloudfn-server テンプレートとの統合
 
 2018/06/05
 

@@ -68,7 +68,8 @@ NEC モバイルバックエンド基盤 サーバ一式を Kubernetes 上で起
 
     $ kubectl create -f mongo-server.yml \
                      -f rabbitmq-server.yml \
-                     -f baas-server.yml \
+                     -f api-server.yml \
+                     -f console-server.yml \
                      -f ssepush-server.yml \
                      -f cloudfn-server.yml
 
@@ -83,17 +84,21 @@ NEC モバイルバックエンド基盤 サーバ一式を Kubernetes 上で起
 > - Deployment name: necbaas-rabbitmq-deploy
 > - Service name: necbaas-rabbitmq-server
 
-- baas-server.yml
+- api-server.yml
 
-> - BaaS サーバのデプロイメントとサービス定義
+> - API サーバのデプロイメントとサービス定義
+
+- console-server.yml
+
+> - Console サーバのデプロイメントとサービス定義
 
 - ssepush-server.yml
 
-> - ssepush-server サーバのデプロイメントとサービス定義
+> - SSEPush サーバのデプロイメントとサービス定義
 
 - cloudfn-server.yml
 
-> - Cloudfn サーバのデプロイメント
+> - Cloud Functions サーバのデプロイメント
 
 ## エントリポイントの確認
 
@@ -101,9 +106,13 @@ NEC モバイルバックエンド基盤 サーバ一式を Kubernetes 上で起
 
     $ kubectl get node -o jsonpath='{..status.addresses[?(@.type=="InternalIP")].address}{"\n"}'
 
-### BaaS サーバ `baas_node_port` の確認
+### API サーバ `api_node_port` の確認
 
-    $ kubectl get svc necbaas-api-console-server -o=jsonpath='{.spec.ports[0].nodePort}{"\n"}'
+    $ kubectl get svc necbaas-api-server -o=jsonpath='{.spec.ports[0].nodePort}{"\n"}'
+
+### Console サーバ `console_node_port` の確認
+
+    $ kubectl get svc necbaas-console-server -o=jsonpath='{.spec.ports[0].nodePort}{"\n"}'
 
 ### SSEPush サーバ `ssepush_node_port` の確認
 
@@ -113,14 +122,14 @@ NEC モバイルバックエンド基盤 サーバ一式を Kubernetes 上で起
 
 ### APIサーバ
 
-ブラウザから(`http://[node_ip]:[baas_node_port]/api`)にアクセスし、以下の JSON 応答が 表示されれば 
+ブラウザから(`http://[node_ip]:[api_node_port]/api`)にアクセスし、以下の JSON 応答が 表示されれば 
 API サーバは正常稼働しています。
 
     {"error":"Not Found"}
 
 ### デベロッパーコンソール
 
-ブラウザからデベロッパーコンソール(`http://[node_ip]:[baas_node_port]/console`) にアクセスし、ログインしてください。
+ブラウザからデベロッパーコンソール(`http://[node_ip]:[console_node_port]/console`) にアクセスし、ログインしてください。
 
 詳細は [デベロッパーコンソール利用手順](https://nec-baas.github.io/baas-manual/latest/server/ja/server/usage/devconsole.html)を参照してください。
 
@@ -154,7 +163,7 @@ BaaS サーバのデベロッパーコンソール → 「システム設定」�
 
 - API サーバ 内部向けベース URI
 
-> - http://necbaas-api-console-server:8080/api
+> - http://necbaas-api-server:8080/api
 
 - AMQP 設定
  
