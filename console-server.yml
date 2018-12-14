@@ -29,15 +29,6 @@ spec:
         app: necbaas-console-server
     spec:
       containers:
-        - name: fluentd-container
-          image: necbaas/baas-fluentd
-          ports:
-            - containerPort: 24224
-          envFrom:
-          - configMapRef:
-              name: necbaas-fluentd-config
-          - secretRef:
-              name: necbaas-mongo-secrets
         - name: console-container
           image: necbaas/console-server
           ports:

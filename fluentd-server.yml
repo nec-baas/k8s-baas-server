@@ -1,0 +1,40 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: necbaas-fluentd-server
+spec:
+  type: ClusterIP
+  ports:
+    - name: "http-port"
+      protocol: "TCP"
+      port: 24224
+      targetPort: 24224
+  selector:
+    app: necbaas-fluentd-server
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: necbaas-fluentd-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: necbaas-fluentd-server
+  template:
+    metadata:
+      labels:
+        app: necbaas-fluentd-server
+    spec:
+      containers:
+        - name: fluentd-container
+          image: necbaas/baas-fluentd
+          ports:
+            - containerPort: 24224
+          envFrom:
+          - configMapRef:
+              name: necbaas-fluentd-config
+          - secretRef:
+              name: necbaas-mongo-secrets

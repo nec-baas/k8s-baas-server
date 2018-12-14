@@ -8,7 +8,7 @@ NEC モバイルバックエンド基盤 サーバ一式を Kubernetes 上で起
 
 * [MongoDB サーバ](https://hub.docker.com/_/mongo/)
 * [RabbitMQ サーバ](https://hub.docker.com/_/rabbitmq/)
-* [fluentd サーバ](https://hub.docker.com/r/necbaas/baas-fluentd/)
+* [Fluentd サーバ](https://hub.docker.com/r/necbaas/baas-fluentd/)
 * [BaaS API サーバ](https://hub.docker.com/r/necbaas/api-console-server/)
 * [BaaS Console サーバ](https://hub.docker.com/r/necbaas/api-console-server/)
 * [BaaS SSE Push サーバ](https://hub.docker.com/r/necbaas/ssepush-server/)
@@ -64,11 +64,18 @@ NEC モバイルバックエンド基盤 サーバ一式を Kubernetes 上で起
 
 ## サーバのデプロイ
 
-下記のコマンドで各サーバをデプロイします。
+利用サーバをデプロイします。
 
     $ kubectl create -f mongo-server.yml \
                      -f rabbitmq-server.yml \
-                     -f api-server.yml \
+                     -f fluentd-server.yml
+
+    # POD 状態の確認
+    $ kubectl get pods
+    
+上記サーバの POD が　"running" 状態になった後、 necbaas 各サーバをデプロイします。                     
+
+    $ kubectl create -f api-server.yml \
                      -f console-server.yml \
                      -f ssepush-server.yml \
                      -f cloudfn-server.yml
@@ -83,6 +90,10 @@ NEC モバイルバックエンド基盤 サーバ一式を Kubernetes 上で起
 > - Secret name: necbaas-rabbitmq-secrets
 > - Deployment name: necbaas-rabbitmq-deploy
 > - Service name: necbaas-rabbitmq-server
+
+- fluentd-server.yml
+
+> - API/Console サーバが利用する Fluentd サーバのデプロイメントとサービス定義
 
 - api-server.yml
 

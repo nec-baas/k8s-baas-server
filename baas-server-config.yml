@@ -6,7 +6,7 @@ metadata:
 data:
   # baas-server config. Refer to docker-baas Dockerfile environment variable.
   MONGO_SERVERS: "necbaas-mongodb-server:27017"
-  LOG_FLUENT_HOST: "localhost"
+  LOG_FLUENT_HOST: "necbaas-fluentd-server"
   #AMQP_URI: "amqp://rabbitmq:rabbitmq@necbaas-rabbitmq-server:5672"
   #MONGO_MAX_CONNECTIONS_PER_HOST:
   #SYSTEM_NO_CHARGE_KEY: 
